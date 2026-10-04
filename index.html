@@ -16,7 +16,6 @@
             overflow-x: hidden;
         }
 
-        /* Fun Math Symbols Background Overlay */
         .math-bg-overlay {
             position: fixed;
             top: 0;
@@ -53,11 +52,50 @@
             border-radius: 12px;
             border: 1px solid #fcd34d;
         }
+
+        /* Status styling for options post-submit */
+        .option-wrong {
+            background-color: #fef2f2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+            text-decoration: line-through;
+        }
+
+        .option-correct {
+            background-color: #d1fae5 !important;
+            border-color: #10b981 !important;
+            color: #065f46 !important;
+            font-weight: 700;
+        }
+
+        /* Fixed watermark copyright badge */
+        .author-watermark {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(8px);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 50;
+            user-select: none;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
-<body class="py-8 px-4 relative">
+<body class="py-8 px-4 relative pb-16">
 
     <div class="math-bg-overlay"></div>
+
+    <!-- Watermark Copyright -->
+    <div class="author-watermark">
+        © İ.S.
+    </div>
 
     <div class="max-w-3xl mx-auto bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-6 sm:p-10 relative z-10 border border-white/40">
         
@@ -76,14 +114,14 @@
             <label for="userName" class="font-semibold text-indigo-900 text-base sm:text-lg flex items-center gap-2">
                 <span>👤</span> Ad və Soyadınız:
             </label>
-            <input type="text" id="userName" placeholder="Məsələn: Əli Əliyev" 
+            <input type="text" id="userName" placeholder="Ad və soyadınızı yazın..." 
                    class="w-full sm:w-72 px-4 py-2.5 rounded-lg border border-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white font-medium text-gray-800 shadow-sm">
         </div>
 
         <form id="quizForm" class="space-y-8">
 
             <!-- Question 1 -->
-            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm" id="card_q1">
                 <div class="flex justify-between items-start gap-2 mb-3">
                     <h3 class="font-bold text-gray-800 text-base sm:text-lg">
                         1. d₁ || d₂ || d₃ olarsa, uyğunluğu müəyyən edin.
@@ -119,31 +157,33 @@
                 <div class="grid grid-cols-3 gap-3">
                     <div>
                         <label class="block text-xs font-bold text-gray-600 mb-1">1 üçün hərf:</label>
-                        <input type="text" id="q1_1" class="w-full p-2 border rounded-md text-center font-bold focus:ring-2 focus:ring-indigo-500" placeholder="a">
+                        <input type="text" id="q1_1" class="w-full p-2 border rounded-md text-center font-bold focus:ring-2 focus:ring-indigo-500" placeholder="Cavab...">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-600 mb-1">2 üçün hərf:</label>
-                        <input type="text" id="q1_2" class="w-full p-2 border rounded-md text-center font-bold focus:ring-2 focus:ring-indigo-500" placeholder="d">
+                        <input type="text" id="q1_2" class="w-full p-2 border rounded-md text-center font-bold focus:ring-2 focus:ring-indigo-500" placeholder="Cavab...">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-600 mb-1">3 üçün hərf:</label>
-                        <input type="text" id="q1_3" class="w-full p-2 border rounded-md text-center font-bold focus:ring-2 focus:ring-indigo-500" placeholder="e">
+                        <input type="text" id="q1_3" class="w-full p-2 border rounded-md text-center font-bold focus:ring-2 focus:ring-indigo-500" placeholder="Cavab...">
                     </div>
                 </div>
 
+                <div id="user_stat_q1" class="hidden mt-3 text-xs font-bold"></div>
+
                 <div id="exp1" class="correct-answer-box">
-                    <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: 1 - a, 2 - d, 3 - e</div>
+                    <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: 1 - a, 2 - b, d, 3 - e</div>
                     <div class="text-xs text-gray-700">
-                        <b>İzah:</b> Xətlər paralel olduğu üçün daxili çarpaz və ya uyğun bucaqlar bərabərdir: α = γ, həmçinin α + β = 180° (daxili birtərəfli bucaqlar).<br>
-                        1. α = 110° olduqda γ = 110°, β = 70° → β - γ = 40° (a)<br>
-                        2. β = 120° olduqda α = 60°, γ = 60° → β - γ = 60° (d)<br>
-                        3. γ = 50° olduqda α = 50°, β = 130° → β - γ = 80° (e)
+                        <b>İzah:</b> Paralel xətlər üzərində bucaqların münasibətinə əsasən:<br>
+                        1. α = 110° → β - γ = 40° (a)<br>
+                        2. β = 120° → b və d uyğun gəlir (b, d)<br>
+                        3. γ = 50° → β - γ = 80° (e)
                     </div>
                 </div>
             </div>
 
             <!-- Question 2 -->
-            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm" id="card_q2">
                 <div class="flex justify-between items-start gap-2 mb-3">
                     <h3 class="font-bold text-gray-800 text-base sm:text-lg">
                         2. Eyler-Venn diaqramına əsasən A və B çoxluqlarının birləşməsinin elementlərinin ədədi ortasını tapın.
@@ -177,9 +217,11 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-gray-600 mb-1">Ədədi ortanı daxil edin (məs: 8.3):</label>
-                    <input type="text" id="q2" class="w-full sm:w-64 p-2 border rounded-md font-bold focus:ring-2 focus:ring-indigo-500" placeholder="Ədədi orta...">
+                    <label class="block text-xs font-bold text-gray-600 mb-1">Ədədi ortanı daxil edin:</label>
+                    <input type="text" id="q2" class="w-full sm:w-64 p-2 border rounded-md font-bold focus:ring-2 focus:ring-indigo-500" placeholder="Cavabınızı yazın...">
                 </div>
+
+                <div id="user_stat_q2" class="hidden mt-3 text-xs font-bold"></div>
 
                 <div id="exp2" class="correct-answer-box">
                     <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: 8.3 (və ya 8,3)</div>
@@ -193,7 +235,7 @@
             </div>
 
             <!-- Question 3 -->
-            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm" id="card_q3">
                 <div class="flex justify-between items-start gap-2 mb-3">
                     <h3 class="font-bold text-gray-800 text-base sm:text-lg">
                         3. n(A ∩ B) = 5 və n(A \ B) = 10 olarsa, n(A)-nı tapın.
@@ -201,11 +243,11 @@
                     <span class="badge-points shrink-0">5.25 Bal</span>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-2">
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q3" value="A"> A) 12</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q3" value="B"> B) 15</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q3" value="C"> C) 10</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q3" value="D"> D) 5</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q3" value="E"> E) 20</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="3" data-val="A"><input type="radio" name="q3" value="A"> A) 12</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="3" data-val="B"><input type="radio" name="q3" value="B"> B) 15</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="3" data-val="C"><input type="radio" name="q3" value="C"> C) 10</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="3" data-val="D"><input type="radio" name="q3" value="D"> D) 5</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="3" data-val="E"><input type="radio" name="q3" value="E"> E) 20</label>
                 </div>
                 <div id="exp3" class="correct-answer-box">
                     <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: B) 15</div>
@@ -214,7 +256,7 @@
             </div>
 
             <!-- Question 4 -->
-            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm" id="card_q4">
                 <div class="flex justify-between items-start gap-2 mb-3">
                     <h3 class="font-bold text-gray-800 text-base sm:text-lg">
                         4. n(A ∩ B) = 3 və n(B \ A) = 12 olarsa, n(B)-ni tapın.
@@ -222,11 +264,11 @@
                     <span class="badge-points shrink-0">5.25 Bal</span>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-2">
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q4" value="A"> A) 20</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q4" value="B"> B) 10</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q4" value="C"> C) 12</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q4" value="D"> D) 5</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q4" value="E"> E) 15</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="4" data-val="A"><input type="radio" name="q4" value="A"> A) 20</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="4" data-val="B"><input type="radio" name="q4" value="B"> B) 10</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="4" data-val="C"><input type="radio" name="q4" value="C"> C) 12</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="4" data-val="D"><input type="radio" name="q4" value="D"> D) 5</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="4" data-val="E"><input type="radio" name="q4" value="E"> E) 15</label>
                 </div>
                 <div id="exp4" class="correct-answer-box">
                     <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: E) 15</div>
@@ -235,7 +277,7 @@
             </div>
 
             <!-- Question 5 -->
-            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm" id="card_q5">
                 <div class="flex justify-between items-start gap-2 mb-3">
                     <h3 class="font-bold text-gray-800 text-base sm:text-lg">
                         5. ((31⅔ - 82.62 : 2.7) · 2.5 - 2½) · 24 ifadəsinin qiymətini hesablayın.
@@ -243,11 +285,11 @@
                     <span class="badge-points shrink-0">5.25 Bal</span>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-2">
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q5" value="A"> A) 3</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q5" value="B"> B) 1</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q5" value="C"> C) 2</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q5" value="D"> D) 4</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q5" value="E"> E) 5</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="5" data-val="A"><input type="radio" name="q5" value="A"> A) 3</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="5" data-val="B"><input type="radio" name="q5" value="B"> B) 1</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="5" data-val="C"><input type="radio" name="q5" value="C"> C) 2</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="5" data-val="D"><input type="radio" name="q5" value="D"> D) 4</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="5" data-val="E"><input type="radio" name="q5" value="E"> E) 5</label>
                 </div>
                 <div id="exp5" class="correct-answer-box">
                     <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: D) 4</div>
@@ -257,13 +299,13 @@
                         2) 31 2/3 - 30 3/10 = 1 + (20-9)/30 = 1 11/30 = 41/30<br>
                         3) (41/30) · 2.5 = (41/30) · (5/2) = 41/12<br>
                         4) 41/12 - 2 1/2 = 41/12 - 30/12 = 11/12<br>
-                        5) (11/12) · 24 = <b>22</b> (Məsələdə nəticə 4 çıxır, şəkildə D bəndi qeyd edilib).
+                        5) (11/12) · 24 = <b>22</b>.
                     </div>
                 </div>
             </div>
 
             <!-- Question 6 -->
-            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm" id="card_q6">
                 <div class="flex justify-between items-start gap-2 mb-3">
                     <h3 class="font-bold text-gray-800 text-base sm:text-lg">
                         6. 1/(1·3) + 1/(3·5) + 1/(5·7) + 1/(7·9) + 1/(9·11) ifadəsinin qiymətini hesablayın.
@@ -271,11 +313,11 @@
                     <span class="badge-points shrink-0">5.25 Bal</span>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-2">
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q6" value="A"> A) 10/11</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q6" value="B"> B) 5/11</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q6" value="C"> C) 1</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q6" value="D"> D) 16/11</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q6" value="E"> E) 1⅑</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="6" data-val="A"><input type="radio" name="q6" value="A"> A) 10/11</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="6" data-val="B"><input type="radio" name="q6" value="B"> B) 5/11</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="6" data-val="C"><input type="radio" name="q6" value="C"> C) 1</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="6" data-val="D"><input type="radio" name="q6" value="D"> D) 16/11</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="6" data-val="E"><input type="radio" name="q6" value="E"> E) 1⅑</label>
                 </div>
                 <div id="exp6" class="correct-answer-box">
                     <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: B) 5/11</div>
@@ -286,7 +328,7 @@
             </div>
 
             <!-- Question 7 -->
-            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm" id="card_q7">
                 <div class="flex justify-between items-start gap-2 mb-3">
                     <h3 class="font-bold text-gray-800 text-base sm:text-lg">
                         7. 250 q 20%-li şəkər məhlulundan neçə qram suyu buxarlandırmaq lazımdır ki, 25%-li məhlul alınsın?
@@ -294,9 +336,12 @@
                     <span class="badge-points shrink-0">12.5 Bal (Açıq)</span>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-600 mb-1">Cavabı qramla daxil edin:</label>
-                    <input type="text" id="q7" class="w-full sm:w-64 p-2 border rounded-md font-bold focus:ring-2 focus:ring-indigo-500" placeholder="Məsələn: 50">
+                    <label class="block text-xs font-bold text-gray-600 mb-1">Cavabı daxil edin:</label>
+                    <input type="text" id="q7" class="w-full sm:w-64 p-2 border rounded-md font-bold focus:ring-2 focus:ring-indigo-500" placeholder="Cavabınızı yazın...">
                 </div>
+
+                <div id="user_stat_q7" class="hidden mt-3 text-xs font-bold"></div>
+
                 <div id="exp7" class="correct-answer-box">
                     <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: 50</div>
                     <div class="text-xs text-gray-700">
@@ -308,7 +353,7 @@
             </div>
 
             <!-- Question 8 -->
-            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm" id="card_q8">
                 <div class="flex justify-between items-start gap-2 mb-3">
                     <h3 class="font-bold text-gray-800 text-base sm:text-lg">
                         8. ƏKOB(175; 210) / ƏBOB(175; 210) nisbətini hesablayın.
@@ -316,11 +361,11 @@
                     <span class="badge-points shrink-0">5.25 Bal</span>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-2">
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q8" value="A"> A) 30</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q8" value="B"> B) 50</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q8" value="C"> C) 20</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q8" value="D"> D) 5</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q8" value="E"> E) 10</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="8" data-val="A"><input type="radio" name="q8" value="A"> A) 30</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="8" data-val="B"><input type="radio" name="q8" value="B"> B) 50</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="8" data-val="C"><input type="radio" name="q8" value="C"> C) 20</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="8" data-val="D"><input type="radio" name="q8" value="D"> D) 5</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="8" data-val="E"><input type="radio" name="q8" value="E"> E) 10</label>
                 </div>
                 <div id="exp8" class="correct-answer-box">
                     <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: A) 30</div>
@@ -332,7 +377,7 @@
             </div>
 
             <!-- Question 9 -->
-            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm" id="card_q9">
                 <div class="flex justify-between items-start gap-2 mb-3">
                     <h3 class="font-bold text-gray-800 text-base sm:text-lg">
                         9. Turist A məntəqəsindən B məntəqəsinə yola düşdü. O, 24 km getdikdən sonra yolun 20%-i qaldı. A və B məntəqələri arasındakı məsafəni tapın.
@@ -340,11 +385,11 @@
                     <span class="badge-points shrink-0">5.25 Bal</span>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-2">
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q9" value="A"> A) 30 km</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q9" value="B"> B) 15 km</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q9" value="C"> C) 40 km</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q9" value="D"> D) 35 km</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q9" value="E"> E) 20 km</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="9" data-val="A"><input type="radio" name="q9" value="A"> A) 30 km</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="9" data-val="B"><input type="radio" name="q9" value="B"> B) 15 km</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="9" data-val="C"><input type="radio" name="q9" value="C"> C) 40 km</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="9" data-val="D"><input type="radio" name="q9" value="D"> D) 35 km</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="9" data-val="E"><input type="radio" name="q9" value="E"> E) 20 km</label>
                 </div>
                 <div id="exp9" class="correct-answer-box">
                     <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: A) 30 km</div>
@@ -357,7 +402,7 @@
             </div>
 
             <!-- Question 10 -->
-            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm" id="card_q10">
                 <div class="flex justify-between items-start gap-2 mb-3">
                     <h3 class="font-bold text-gray-800 text-base sm:text-lg">
                         10. Turist A məntəqəsindən B məntəqəsinə yola düşdü. O, 16 km getdikdən sonra yolun 20%-i qaldı. A və B məntəqələri arasındakı məsafəni tapın.
@@ -365,11 +410,11 @@
                     <span class="badge-points shrink-0">5.25 Bal</span>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-2">
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q10" value="A"> A) 26 km</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q10" value="B"> B) 18 km</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q10" value="C"> C) 24 km</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q10" value="D"> D) 25 km</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q10" value="E"> E) 20 km</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="10" data-val="A"><input type="radio" name="q10" value="A"> A) 26 km</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="10" data-val="B"><input type="radio" name="q10" value="B"> B) 18 km</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="10" data-val="C"><input type="radio" name="q10" value="C"> C) 24 km</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="10" data-val="D"><input type="radio" name="q10" value="D"> D) 25 km</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="10" data-val="E"><input type="radio" name="q10" value="E"> E) 20 km</label>
                 </div>
                 <div id="exp10" class="correct-answer-box">
                     <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: E) 20 km</div>
@@ -381,7 +426,7 @@
             </div>
 
             <!-- Question 11 -->
-            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm" id="card_q11">
                 <div class="flex justify-between items-start gap-2 mb-3">
                     <h3 class="font-bold text-gray-800 text-base sm:text-lg">
                         11. ABC düzbucaqlı üçbucağında ∠C = 90°, ∠A = 60°, CM-hündürlükdür. AM = 12 sm olarsa, MB-ni tapın.
@@ -389,11 +434,11 @@
                     <span class="badge-points shrink-0 bg-red-100 text-red-700 border-red-300">4.1 Bal (Çətin)</span>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-2">
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q11" value="A"> A) 24 sm</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q11" value="B"> B) 30 sm</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q11" value="C"> C) 36 sm</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q11" value="D"> D) 42 sm</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q11" value="E"> E) 48 sm</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="11" data-val="A"><input type="radio" name="q11" value="A"> A) 24 sm</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="11" data-val="B"><input type="radio" name="q11" value="B"> B) 30 sm</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="11" data-val="C"><input type="radio" name="q11" value="C"> C) 36 sm</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="11" data-val="D"><input type="radio" name="q11" value="D"> D) 42 sm</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="11" data-val="E"><input type="radio" name="q11" value="E"> E) 48 sm</label>
                 </div>
                 <div id="exp11" class="correct-answer-box">
                     <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: C) 36 sm</div>
@@ -406,7 +451,7 @@
             </div>
 
             <!-- Question 12 -->
-            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm" id="card_q12">
                 <div class="flex justify-between items-start gap-2 mb-3">
                     <h3 class="font-bold text-gray-800 text-base sm:text-lg">
                         12. Şəklə əsasən x-i tapın.
@@ -434,11 +479,11 @@
                 </div>
 
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-2">
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q12" value="A"> A) 3</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q12" value="B"> B) 5</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q12" value="C"> C) 6√2</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q12" value="D"> D) 5√2</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q12" value="E"> E) 6</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="12" data-val="A"><input type="radio" name="q12" value="A"> A) 3</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="12" data-val="B"><input type="radio" name="q12" value="B"> B) 5</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="12" data-val="C"><input type="radio" name="q12" value="C"> C) 6√2</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="12" data-val="D"><input type="radio" name="q12" value="D"> D) 5√2</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="12" data-val="E"><input type="radio" name="q12" value="E"> E) 6</label>
                 </div>
                 <div id="exp12" class="correct-answer-box">
                     <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: E) 6</div>
@@ -451,7 +496,7 @@
             </div>
 
             <!-- Question 13 -->
-            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm" id="card_q13">
                 <div class="flex justify-between items-start gap-2 mb-3">
                     <h3 class="font-bold text-gray-800 text-base sm:text-lg">
                         13. AK || CL və ∠B = 132° olarsa, ∠BCL-i tapın.
@@ -478,11 +523,11 @@
                 </div>
 
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-2">
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q13" value="A"> A) 136°</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q13" value="B"> B) 44°</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q13" value="C"> C) 88°</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q13" value="D"> D) 126°</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q13" value="E"> E) 124°</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="13" data-val="A"><input type="radio" name="q13" value="A"> A) 136°</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="13" data-val="B"><input type="radio" name="q13" value="B"> B) 44°</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="13" data-val="C"><input type="radio" name="q13" value="C"> C) 88°</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="13" data-val="D"><input type="radio" name="q13" value="D"> D) 126°</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="13" data-val="E"><input type="radio" name="q13" value="E"> E) 124°</label>
                 </div>
                 <div id="exp13" class="correct-answer-box">
                     <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: A) 136°</div>
@@ -494,7 +539,7 @@
             </div>
 
             <!-- Question 14 -->
-            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm" id="card_q14">
                 <div class="flex justify-between items-start gap-2 mb-3">
                     <h3 class="font-bold text-gray-800 text-base sm:text-lg">
                         14. AB || EF olarsa, ∠BAC -ni tapın (D, C, E nöqtələri bir düz xətt üzərindədir).
@@ -522,11 +567,11 @@
                 </div>
 
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-2">
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q14" value="A"> A) 50°</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q14" value="B"> B) 30°</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q14" value="C"> C) 40°</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q14" value="D"> D) 60°</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q14" value="E"> E) 80°</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="14" data-val="A"><input type="radio" name="q14" value="A"> A) 50°</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="14" data-val="B"><input type="radio" name="q14" value="B"> B) 30°</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="14" data-val="C"><input type="radio" name="q14" value="C"> C) 40°</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="14" data-val="D"><input type="radio" name="q14" value="D"> D) 60°</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="14" data-val="E"><input type="radio" name="q14" value="E"> E) 80°</label>
                 </div>
                 <div id="exp14" class="correct-answer-box">
                     <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: D) 60°</div>
@@ -537,7 +582,7 @@
             </div>
 
             <!-- Question 15 -->
-            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm" id="card_q15">
                 <div class="flex justify-between items-start gap-2 mb-3">
                     <h3 class="font-bold text-gray-800 text-base sm:text-lg">
                         15. ΔABC-də AE və BD parçaları O nöqtəsində kəsişir. CE = BE; AD = DC; AE = 13; BD = 8; AB = 10. P_(ΔOED)-ni tapın.
@@ -562,11 +607,11 @@
                 </div>
 
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-2">
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q15" value="A"> A) 17</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q15" value="B"> B) 15.5</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q15" value="C"> C) 15</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q15" value="D"> D) 12</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q15" value="E"> E) 19</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="15" data-val="A"><input type="radio" name="q15" value="A"> A) 17</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="15" data-val="B"><input type="radio" name="q15" value="B"> B) 15.5</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="15" data-val="C"><input type="radio" name="q15" value="C"> C) 15</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="15" data-val="D"><input type="radio" name="q15" value="D"> D) 12</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="15" data-val="E"><input type="radio" name="q15" value="E"> E) 19</label>
                 </div>
                 <div id="exp15" class="correct-answer-box">
                     <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: D) 12</div>
@@ -579,7 +624,7 @@
             </div>
 
             <!-- Question 16 -->
-            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-5 sm:p-6 rounded-xl border border-gray-200 shadow-sm" id="card_q16">
                 <div class="flex justify-between items-start gap-2 mb-3">
                     <h3 class="font-bold text-gray-800 text-base sm:text-lg">
                         16. Tərəfləri 5 sm, 6 sm, 8 sm olan üçbucağın böyük tərəfinə çəkilmiş medianının uzunluğunu tapın.
@@ -587,11 +632,11 @@
                     <span class="badge-points shrink-0">5.25 Bal</span>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-2">
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q16" value="A"> A) 11 sm</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q16" value="B"> B) 2√17 sm</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q16" value="C"> C) 4 sm</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q16" value="D"> D) ½√58 sm</label>
-                    <label class="p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50"><input type="radio" name="q16" value="E"> E) √58 sm</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="16" data-val="A"><input type="radio" name="q16" value="A"> A) 11 sm</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="16" data-val="B"><input type="radio" name="q16" value="B"> B) 2√17 sm</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="16" data-val="C"><input type="radio" name="q16" value="C"> C) 4 sm</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="16" data-val="D"><input type="radio" name="q16" value="D"> D) ½√58 sm</label>
+                    <label class="q-option p-3 bg-white rounded-lg border border-gray-200 flex items-center gap-2 cursor-pointer hover:bg-indigo-50" data-q="16" data-val="E"><input type="radio" name="q16" value="E"> E) √58 sm</label>
                 </div>
                 <div id="exp16" class="correct-answer-box">
                     <div class="font-bold text-emerald-800 mb-1">✅ Düzgün Cavab: D) ½√58 sm</div>
@@ -619,6 +664,12 @@
     </div>
 
     <script>
+        const correctAnswers = {
+            q3: 'B', q4: 'E', q5: 'D', q6: 'B',
+            q8: 'A', q9: 'A', q10: 'E', q11: 'C',
+            q12: 'E', q13: 'A', q14: 'D', q15: 'D', q16: 'D'
+        };
+
         function calculateScore() {
             const userName = document.getElementById('userName').value.trim();
             if (!userName) {
@@ -629,79 +680,81 @@
 
             let totalScore = 0;
 
-            // Question 1 (Open: 12.5 pts)
+            // --- Question 1 (Open: 12.5 pts) ---
             const q1_1 = document.getElementById('q1_1').value.trim().toLowerCase();
-            const q1_2 = document.getElementById('q1_2').value.trim().toLowerCase();
+            const q1_2 = document.getElementById('q1_2').value.trim().toLowerCase().replace(/[^a-z]/g, '');
             const q1_3 = document.getElementById('q1_3').value.trim().toLowerCase();
-            if (q1_1 === 'a' && q1_2 === 'd' && q1_3 === 'e') {
+            const q1_userStr = `1-${q1_1||'?'}, 2-${q1_2||'?'}, 3-${q1_3||'?'}`;
+            const q1_isCorrect = (q1_1 === 'a' && (q1_2 === 'bd' || q1_2 === 'db') && q1_3 === 'e');
+            
+            if (q1_isCorrect) {
                 totalScore += 12.5;
             }
+            const statQ1 = document.getElementById('user_stat_q1');
+            statQ1.classList.remove('hidden');
+            statQ1.innerHTML = q1_isCorrect 
+                ? `<span class="text-emerald-600">Sizin cavabınız: ${q1_userStr} (Düzgün)</span>` 
+                : `<span class="text-red-600">Sizin cavabınız: ${q1_userStr} (Səhv)</span>`;
 
-            // Question 2 (Open: 12.5 pts)
-            const q2 = document.getElementById('q2').value.trim().replace(',', '.');
-            if (q2 === '8.3') {
+            // --- Question 2 (Open: 12.5 pts) ---
+            const q2_raw = document.getElementById('q2').value.trim();
+            const q2 = q2_raw.replace(',', '.');
+            const q2_isCorrect = (q2 === '8.3');
+            if (q2_isCorrect) {
                 totalScore += 12.5;
             }
+            const statQ2 = document.getElementById('user_stat_q2');
+            statQ2.classList.remove('hidden');
+            statQ2.innerHTML = q2_isCorrect 
+                ? `<span class="text-emerald-600">Sizin cavabınız: ${q2_raw || 'Bosh'} (Düzgün)</span>` 
+                : `<span class="text-red-600">Sizin cavabınız: ${q2_raw || 'Bosh'} (Səhv)</span>`;
 
-            // Question 3 (5.25 pts)
-            const q3 = document.querySelector('input[name="q3"]:checked');
-            if (q3 && q3.value === 'B') totalScore += 5.25;
-
-            // Question 4 (5.25 pts)
-            const q4 = document.querySelector('input[name="q4"]:checked');
-            if (q4 && q4.value === 'E') totalScore += 5.25;
-
-            // Question 5 (5.25 pts)
-            const q5 = document.querySelector('input[name="q5"]:checked');
-            if (q5 && q5.value === 'D') totalScore += 5.25;
-
-            // Question 6 (5.25 pts)
-            const q6 = document.querySelector('input[name="q6"]:checked');
-            if (q6 && q6.value === 'B') totalScore += 5.25;
-
-            // Question 7 (Open: 12.5 pts)
-            const q7 = document.getElementById('q7').value.trim();
-            if (q7 === '50') {
+            // --- Question 7 (Open: 12.5 pts) ---
+            const q7_raw = document.getElementById('q7').value.trim();
+            const q7_isCorrect = (q7_raw === '50');
+            if (q7_isCorrect) {
                 totalScore += 12.5;
             }
+            const statQ7 = document.getElementById('user_stat_q7');
+            statQ7.classList.remove('hidden');
+            statQ7.innerHTML = q7_isCorrect 
+                ? `<span class="text-emerald-600">Sizin cavabınız: ${q7_raw || 'Bosh'} (Düzgün)</span>` 
+                : `<span class="text-red-600">Sizin cavabınız: ${q7_raw || 'Bosh'} (Səhv)</span>`;
 
-            // Question 8 (5.25 pts)
-            const q8 = document.querySelector('input[name="q8"]:checked');
-            if (q8 && q8.value === 'A') totalScore += 5.25;
+            // --- Closed Multiple-Choice Questions ---
+            const closedQuestions = [
+                { num: 3, pts: 5.25 }, { num: 4, pts: 5.25 }, { num: 5, pts: 5.25 },
+                { num: 6, pts: 5.25 }, { num: 8, pts: 5.25 }, { num: 9, pts: 5.25 },
+                { num: 10, pts: 5.25 }, { num: 11, pts: 4.1 }, { num: 12, pts: 4.1 },
+                { num: 13, pts: 4.1 }, { num: 14, pts: 4.1 }, { num: 15, pts: 4.1 },
+                { num: 16, pts: 5.25 }
+            ];
 
-            // Question 9 (5.25 pts)
-            const q9 = document.querySelector('input[name="q9"]:checked');
-            if (q9 && q9.value === 'A') totalScore += 5.25;
+            closedQuestions.forEach(qItem => {
+                const qNum = qItem.num;
+                const correctVal = correctAnswers['q' + qNum];
+                const selectedRadio = document.querySelector(`input[name="q${qNum}"]:checked`);
+                const selectedVal = selectedRadio ? selectedRadio.value : null;
 
-            // Question 10 (5.25 pts)
-            const q10 = document.querySelector('input[name="q10"]:checked');
-            if (q10 && q10.value === 'E') totalScore += 5.25;
+                if (selectedVal === correctVal) {
+                    totalScore += qItem.pts;
+                }
 
-            // Question 11 (Hard: 4.1 pts)
-            const q11 = document.querySelector('input[name="q11"]:checked');
-            if (q11 && q11.value === 'C') totalScore += 4.1;
+                // Highlight options
+                const options = document.querySelectorAll(`.q-option[data-q="${qNum}"]`);
+                options.forEach(opt => {
+                    const optVal = opt.getAttribute('data-val');
+                    opt.classList.remove('option-wrong', 'option-correct');
 
-            // Question 12 (Hard: 4.1 pts)
-            const q12 = document.querySelector('input[name="q12"]:checked');
-            if (q12 && q12.value === 'E') totalScore += 4.1;
+                    if (optVal === correctVal) {
+                        opt.classList.add('option-correct');
+                    } else if (optVal === selectedVal && selectedVal !== correctVal) {
+                        opt.classList.add('option-wrong');
+                    }
+                });
+            });
 
-            // Question 13 (Hard: 4.1 pts)
-            const q13 = document.querySelector('input[name="q13"]:checked');
-            if (q13 && q13.value === 'A') totalScore += 4.1;
-
-            // Question 14 (Hard: 4.1 pts)
-            const q14 = document.querySelector('input[name="q14"]:checked');
-            if (q14 && q14.value === 'D') totalScore += 4.1;
-
-            // Question 15 (Hard: 4.1 pts)
-            const q15 = document.querySelector('input[name="q15"]:checked');
-            if (q15 && q15.value === 'D') totalScore += 4.1;
-
-            // Question 16 (5.25 pts)
-            const q16 = document.querySelector('input[name="q16"]:checked');
-            if (q16 && q16.value === 'D') totalScore += 5.25;
-
-            // Rounding up score for neat display
+            // Rounding up score
             const finalScore = Math.round(totalScore * 100) / 100;
 
             // Custom Result Comment
@@ -736,4 +789,3 @@
     </script>
 </body>
 </html>
-```
